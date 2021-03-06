@@ -1,0 +1,2 @@
+INSERT INTO public.country_language (country_code, language, is_official, percentage) VALUES ('BHR', 'Arabic', true, 67.7);
+INSERT INTO public.country (code, name, continent, region, surface_area, indep_year, population, life_expectancy, gnp, gnp_old, local_name, government_form, head_of_state, capital, code2) VALUES ('BHR', 'Bahrain', 'Asia', 'Middle East', 694, 1971, 617000, 73, 6366.00, 6097.00, 'Al-Bahrayn', 'Monarchy (Emirate)', 'Hamad ibn Isa al-Khalifa', 149, 'BH');
