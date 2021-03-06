@@ -12,10 +12,9 @@
     <artifactId>java-workshop</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>java-workshop</name>
-    <description>Demo project for Spring Boot</description>
+    <description>Project for java workshop</description>
     <properties>
         <java.version>8</java.version>
-        <testcontainers.version>1.15.2</testcontainers.version>
         <springfox.version>3.0.0</springfox.version>
     </properties>
     <dependencies>
@@ -82,7 +81,7 @@
                 <executions>
                     <execution>
                         <id>start</id>
-                        <phase>pre-integration-test</phase>
+                        <phase>post-integration-test</phase>
                         <goals>
                             <goal>build</goal>
                             <goal>start</goal>

@@ -1,5 +1,6 @@
 package com.example.javaworkshop;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -19,9 +20,11 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.net.ConnectException;
 
+
 @WebMvcTest(CountryController.class)
 public class CountryControllerTest {
     public static final String INTERNAL_ERROR = "INTERNAL_ERROR";
+    public static final String INVALID_COUNTRY_CODE = "INVALID_COUNTRY_CODE";
     private static final String VALID_ENDPOINT = "/BHR";
     private static final String INVALID_ENDPOINT = "/TST";
     private static final String RETURN_BODY =
@@ -53,16 +56,15 @@ public class CountryControllerTest {
 
         given(countryService.getCountryByCode(any(String.class))).willThrow(InvalidCountryCodeException.class);
 
-        String error = mockMvc.perform(MockMvcRequestBuilders.get(INVALID_ENDPOINT)
+        String message = mockMvc.perform(MockMvcRequestBuilders.get(INVALID_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is5xxServerError())
-                .andReturn().getResponse().getErrorMessage();
+                .andReturn().getResponse().getContentAsString();
 
+        System.out.println(message);
 
-        //todo: fix tests
-
-//        assertTrue(StringUtils.contains(error, INVALID_COUNTRY_CODE));
+        assertEquals(INVALID_COUNTRY_CODE,message);
     }
 
 
@@ -73,16 +75,13 @@ public class CountryControllerTest {
             throw new ConnectException();
         });
 
-//        String error =
-                mockMvc.perform(MockMvcRequestBuilders.get(VALID_ENDPOINT)
+        String message = mockMvc.perform(MockMvcRequestBuilders.get(VALID_ENDPOINT)
                 .contentType(MediaType.APPLICATION_JSON)
                 .accept(MediaType.APPLICATION_JSON))
-                .andExpect(status().is5xxServerError());
-//                .andReturn().getResponse().getErrorMessage();
+                .andExpect(status().is5xxServerError())
+                .andReturn().getResponse().getContentAsString();
 
-        //todo: fix tests
-
-//        assertTrue(StringUtils.contains(error, INTERNAL_ERROR));
+        assertEquals(INTERNAL_ERROR,message);
     }
 
     private CountryDto createCountryDto() {

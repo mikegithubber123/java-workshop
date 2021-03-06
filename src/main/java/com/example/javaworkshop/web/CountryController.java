@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-
 import java.net.ConnectException;
 
 
@@ -22,6 +21,8 @@ import java.net.ConnectException;
 @RestController
 @RequiredArgsConstructor
 public class CountryController {
+    public static final String INTERNAL_ERROR = "INTERNAL_ERROR";
+    public static final String INVALID_COUNTRY_CODE = "INVALID_COUNTRY_CODE";
     private final CountryService countryService;
 
     @ApiOperation(value = "Receives country code and returns country information")
@@ -40,20 +41,12 @@ public class CountryController {
 
 
     @ExceptionHandler(InvalidCountryCodeException.class)
-    public ResponseEntity<?> handleInvalidCountryCodeException(InvalidCountryCodeException e) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(e.getMessage());
+    public ResponseEntity<?> handleInvalidCountryCodeException() {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(INVALID_COUNTRY_CODE);
     }
 
     @ExceptionHandler(ConnectException.class)
     public ResponseEntity<?> handleConnectException() {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("INTERNAL_ERROR");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(INTERNAL_ERROR);
     }
-
-//    private ResponseEntity<Error> createErrorResponse(WebRequest request,String message) {
-//        Error error = Error.builder()
-//                .code(500)
-//                .message(message)
-//                .build();
-//        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
-//    }
 }
